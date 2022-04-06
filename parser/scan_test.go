@@ -40,3 +40,13 @@ func TestScan3(t *testing.T) {
 		fmt.Printf("tokenType:%d,%s\n", tok.TokenType, tok.TokenString)
 	}
 }
+
+func TestScan4(t *testing.T) {
+	str := `{
+		shell {echo  hello $a $b $c}
+}
+	`
+	for rest, tok, _ := Scan(str); tok != nil && tok.TokenType != -1; rest, tok, _ = Scan(rest) {
+		fmt.Printf("tokenType:%d,%s\n", tok.TokenType, tok.TokenString)
+	}
+}

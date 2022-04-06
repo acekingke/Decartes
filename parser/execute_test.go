@@ -98,3 +98,16 @@ func Test_braceCode(t *testing.T) {
 	`
 	_ = Parser(str)
 }
+
+func Test_err1(t *testing.T) {
+	ParserInit()
+	str := `
+	set ax 1
+	puts $ax
+	puts now test the cartesian product for test
+	cart (1 2 3) (4 5 6) (7 8 9) each (a b c) {
+			shell {echo  hello $a $b $c}
+	}
+	`
+	_ = Parser(str)
+}

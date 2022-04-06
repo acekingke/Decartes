@@ -44,14 +44,23 @@ var rp_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, string) 
 
 // {xxx}
 var brace_string_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, string) {
+	count := 0
 	braceLeft := func(x string) (bool, string, string) {
 		return lexergo.Match_fn(x,
 			func(in string) bool {
-				return in == "{"
+				count += 1
+				return in == "{" && count == 1
 			})
 	}
 	nonBrace := func(x string) (bool, string, string) {
 		return lexergo.Match_fn(x, func(in string) bool {
+			if in == "{" {
+				count++
+				return true
+			} else if in == "}" {
+				count--
+				return count == 1
+			}
 			return in != "}"
 		})
 	}

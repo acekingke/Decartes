@@ -45,3 +45,6 @@ permutation s1 s2 ... sn
 - [ ]  if
 - [ ]  while
 
+# License
+
+[MIT](LICENSE)
