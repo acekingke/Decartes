@@ -13,7 +13,9 @@ inspired from tcl,  has philosopy
 4. small enough
 5. easy to extend your own grammar, 
 
-
+# Tool
+[grammar generator](https://github.com/acekingke/yaccgo)
+[lexer package](https://github.com/acekingke/lexergo)
 # Grammar
 
     WIP....
