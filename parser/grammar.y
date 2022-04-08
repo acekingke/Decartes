@@ -6,7 +6,8 @@ import "os"
 %token NEWLINE
 %token BREAK
 %token 	CARTESIAN
-
+%token  PERMUTATION 
+%token 	STEP
 %token	NORMALCMD
 %token 	EACH
 %token 	IDENTIFIER
@@ -29,7 +30,7 @@ import "os"
 %type <Value>  SINGLEQUOTE_STRING
 %type <Value>  SQUAREQUOTE_STRING
 %type <Value>  NORMALCMD
-
+%type <Array>  STEPCMDS
 %union {
     WorkValue
 }
@@ -52,6 +53,22 @@ CMD: NORMALCMD WORDS {
           ParserError(err)
        }
     }
+    | PERMUTATION ARRAY  {
+       p := &PermType{
+            StepNames: $2,
+       }
+       err := p.Execute();
+         if err != nil {
+             ParserError(err)
+         }
+    }
+    | STEP IDENTIFIER STRING {
+       err := NewStep($2, $3)
+       if err != nil {
+          ParserError(err)
+       }
+    }
+
 WORDS : /*empty*/ {
     $$= make([]string,0)
 }

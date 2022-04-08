@@ -235,7 +235,6 @@ func ExecuteNormalCmd(name string, argv []string) error {
 	}
 }
 
-//TODO:
 func RegisterCommand(name string, f NormalCmdFun) {
 	CommandMap[name] = f
 }

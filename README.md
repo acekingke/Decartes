@@ -24,15 +24,19 @@ inspired from tcl,  has philosopy
 
 # COMMAND
 
-step  {xxxx}
+step  s1 {xxxx}
 
 set x val
 
-cart (),... () each (a1 ... an) {
+puts $x
+
+cart (x1 x2 ... xk) ... (z1 z2 ... zk) each (a1 ... an) {
 
 }
+
 shell {xxxx}
-permutation s1 s2 ... sn
+
+perm (s1 s2 ... sn)
 
 # WIP
 

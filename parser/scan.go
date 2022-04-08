@@ -18,6 +18,8 @@ var keyword = map[string]int{
 	"break": BREAK,
 	"cart":  CARTESIAN,
 	"each":  EACH,
+	"perm":  PERMUTATION,
+	"step":  STEP,
 }
 
 // alphadigit_fn , alpha or number
