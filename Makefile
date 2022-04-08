@@ -6,4 +6,4 @@ grammar:
 
 build:
 	go fmt $(TOP)/...
-	go build -o bin/Decartes ./cmd/*.go
+	go build -o bin/Decartes ./Decartes/*.go
