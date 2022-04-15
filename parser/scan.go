@@ -134,6 +134,23 @@ var blank_fn lexergo.Bool_string_string_fn = lexergo.Repeat_fn(lexergo.Select_fn
 		}),
 	}*/), 1, lexergo.MaxInt)
 
+// Comment start with #
+var comment_fn lexergo.Bool_string_string_fn = lexergo.Concat_fn(func(x string) (bool, string, string) {
+	return lexergo.Match_fn(x, func(in string) bool {
+		return in == "#"
+	})
+},
+	lexergo.Repeat_fn(func(x string) (bool, string, string) {
+		return lexergo.Match_fn(x, func(in string) bool {
+			return in != "\r" && in != "\n"
+		})
+	}, 0, lexergo.MaxInt),
+	func(x string) (bool, string, string) {
+		return lexergo.Match_fn(x, func(in string) bool {
+			return in == "\r" || in == "\n"
+		})
+	},
+)
 var newline_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, string) {
 	return lexergo.Match_fn(x, func(in string) bool {
 		return in == "\r" || in == "\n"
@@ -141,7 +158,7 @@ var newline_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, str
 }
 var Scan = func(src string) (string, *Token, error) {
 	_, _, rest := blank_fn(src)
-
+	_, _, rest = comment_fn(rest) // skip comment
 	var flag bool
 	var read string
 	if flag, read, rest = alphadigit_fn(rest); flag {

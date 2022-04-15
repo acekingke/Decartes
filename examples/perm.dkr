@@ -1,0 +1,7 @@
+# This is a comment
+puts permutation the steps
+
+step a {puts do STEP 1}
+step b {puts "do STEP 2"}
+step c {puts "do STEP 3"}
+perm (a b c)
