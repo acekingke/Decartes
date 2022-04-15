@@ -142,6 +142,12 @@ func processString(env *Evironment, symbols *SymbolTable, arg string) (string, e
 		newarg = arg[1 : len(arg)-1]
 
 	}
+	// Single quote string do not replace variables.
+	if strings.HasPrefix(arg, "'") && strings.HasSuffix(arg, "'") {
+		newarg = arg[1 : len(arg)-1]
+		return newarg, nil
+	}
+
 	if strings.HasPrefix(arg, "[") {
 		//TODO: do not support now
 		// return "", errors.New("not support now")

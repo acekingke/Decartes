@@ -111,3 +111,13 @@ func Test_err1(t *testing.T) {
 	`
 	_ = Parser(str)
 }
+
+func Test_SingleQuote(t *testing.T) {
+	ParserInit()
+	str := `
+	set x world
+	puts 'hello $x'
+	puts "hello $x"
+	`
+	_ = Parser(str)
+}
