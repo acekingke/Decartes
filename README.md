@@ -12,6 +12,9 @@ inspired from tcl,  has philosopy
 4. interpreted language
 4. small enough
 5. easy to extend your own grammar, 
+# Install and usage
+install : `go get https://github.com/acekingke/Decartes/Decartes`
+run: `Decartes examples/print.dkr`
 
 # Tool
 [grammar generator](https://github.com/acekingke/yaccgo)
