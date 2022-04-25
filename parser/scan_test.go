@@ -50,3 +50,19 @@ func TestScan4(t *testing.T) {
 		fmt.Printf("tokenType:%d,%s\n", tok.TokenType, tok.TokenString)
 	}
 }
+func TestComment(t *testing.T) {
+	str := `
+	#Type:          Single, Span, Stripe, Mirror, RAID-5
+	#Size:          10, 100, 500, 1000, 5000, 10000, 40000
+	#Format method: Quick, Slow
+	#File system:   FAT, FAT32, NTFS
+	#Compression:   On, Off
+	
+	puts Type   size  format   "filesystem"   compression
+`
+	for rest, tok, _ := Scan(str); tok != nil && tok.TokenType != -1; rest, tok, _ = Scan(rest) {
+		fmt.Printf("tokenType:%d,%s\n", tok.TokenType, tok.TokenString)
+	}
+	//_ = Parser(str)
+
+}

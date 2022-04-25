@@ -144,7 +144,7 @@ var comment_fn lexergo.Bool_string_string_fn = lexergo.Concat_fn(func(x string) 
 		return lexergo.Match_fn(x, func(in string) bool {
 			return in != "\r" && in != "\n"
 		})
-	}, 0, lexergo.MaxInt),
+	}, 1, lexergo.MaxInt),
 	func(x string) (bool, string, string) {
 		return lexergo.Match_fn(x, func(in string) bool {
 			return in == "\r" || in == "\n"
@@ -158,7 +158,10 @@ var newline_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, str
 }
 var Scan = func(src string) (string, *Token, error) {
 	_, _, rest := blank_fn(src)
-	_, _, rest = comment_fn(rest) // skip comment
+	for len(rest) != 0 && rest[0] == '#' {
+		_, _, rest = comment_fn(rest) // skip comment
+		_, _, rest = blank_fn(rest)
+	}
 	var flag bool
 	var read string
 	if flag, read, rest = alphadigit_fn(rest); flag {

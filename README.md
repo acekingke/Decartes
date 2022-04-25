@@ -3,6 +3,8 @@ English | [简体中文](README_CN.md)
 
 The essence of testing is exhaustive.  how to exhaust all possibilities to find bugs, it is a greate challenge. You shouldn‘t do it manually, You should do it with a machine. Language **Decartes** make it. which core is the **Cartesian product** and **permutation** algorithm.
 
+It is a method for combainatial testing, or pairwise testing.
+
 # Philosophy
 
 inspired from tcl,  has philosopy
