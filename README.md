@@ -205,8 +205,30 @@ do STEP 1
 do STEP 2 
 ```
 
+## 8. expr
+support the expression, and relation expression.
+grammar is `expr {xxxx}`
+for example:
 
+```
+puts [expr {1+1}]
 
+puts [expr {1+1>2}]
+puts [expr {1+1*2}]
+```
+## 9. if command
+`if` command is used to judge the condition.
+the form is: `if {condition} {command}` or 
+`if {condition} {command} else {command}`
+for example:
+
+```
+if {1+1>2} {
+	puts "1+1>2"
+} else {
+	puts "1+1<2"
+}
+```
 # COMMAND
 
 step  s1 {xxxx}
@@ -234,8 +256,8 @@ perm (s1 s2 ... sn)
 - [x]  puts
 - [x]  step
 - [x]  cart  each command
-- [ ]  permutation
-- [ ]  if
+- [x]  permutation
+- [x]  if
 - [ ]  while
 
 # License
