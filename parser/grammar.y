@@ -1,10 +1,11 @@
 %{
-package Parser
+package parser
 import "fmt"
 import "os"
 %}
 %token NEWLINE
 %token BREAK
+%token IF ELSE
 %token 	CARTESIAN
 %token  PERMUTATION 
 %token 	STEP
@@ -31,6 +32,7 @@ import "os"
 %type <Value>  SQUAREQUOTE_STRING
 %type <Value>  NORMALCMD
 %type <Array>  STEPCMDS
+%left ELSE
 %union {
     WorkValue
 }
@@ -68,6 +70,17 @@ CMD: NORMALCMD WORDS {
           ParserError(err)
        }
     }
+    | IFCMD {
+       
+    }
+IFCMD: IF STRING  STRING  {
+         ifcmd := NewIfCmd($2, $3, "")
+          ifcmd.Execute()
+        }
+       | IF STRING  STRING ELSE STRING {
+                ifcmd := NewIfCmd($2, $3, $5)
+          ifcmd.Execute()
+       }
 
 WORDS : /*empty*/ {
     $$= make([]string,0)
