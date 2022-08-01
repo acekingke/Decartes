@@ -1,4 +1,4 @@
-package Parser
+package parser
 
 import (
 	"fmt"
@@ -118,6 +118,44 @@ func Test_SingleQuote(t *testing.T) {
 	set x world
 	puts 'hello $x'
 	puts "hello $x"
+	`
+	_ = Parser(str)
+}
+
+func Test_Expr(t *testing.T) {
+	ParserInit()
+	str := ` 
+	puts [expr {1 + 2 * 3 }]
+	`
+	_ = Parser(str)
+}
+
+func Test_Expr2(t *testing.T) {
+	ParserInit()
+	str := ` 
+	puts [expr {1+2>3}]
+	`
+	_ = Runstring(str)
+}
+
+func Test_Ifcmd(t *testing.T) {
+	ParserInit()
+	str := `
+	if {1+2>2} {
+		puts hello
+	}
+	`
+	_ = Parser(str)
+}
+
+func Test_Ifcmd2(t *testing.T) {
+	ParserInit()
+	str := `
+	if {1+2>3} {
+		puts hello
+	}else{
+		puts 'it not over 3'
+	}
 	`
 	_ = Parser(str)
 }

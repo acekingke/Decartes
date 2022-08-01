@@ -1,4 +1,4 @@
-package Parser
+package parser
 
 import (
 	"errors"
@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"github.com/acekingke/Decartes/cartesian"
+	"github.com/acekingke/Decartes/expr"
 )
 
 const (
@@ -112,6 +113,41 @@ func (w *WorkCart) Execute() error {
 	return nil
 }
 
+// IF Cmd
+type IfCmdStruct struct {
+	expr      string
+	ifTrueCmd string
+	elseCmd   string
+}
+
+func NewIfCmd(expr string, ifcmd string, elseString string) *IfCmdStruct {
+	return &IfCmdStruct{
+		expr:      expr,
+		ifTrueCmd: ifcmd,
+		elseCmd:   elseString,
+	}
+}
+func (ifcmd *IfCmdStruct) Execute() error {
+	newExprStr := fmt.Sprintf("expr %s\n", ifcmd.expr)
+
+	Runstring(newExprStr)
+	if globalEnv.Result != "0" {
+		arg_, err := processString(globalEnv, GlobalSymbolTable, ifcmd.ifTrueCmd)
+		if err != nil {
+			return err
+		}
+		Runstring(arg_)
+	} else {
+		if ifcmd.elseCmd != "" {
+			arg_, err := processString(globalEnv, GlobalSymbolTable, ifcmd.elseCmd)
+			if err != nil {
+				return err
+			}
+			Runstring(arg_)
+		}
+	}
+	return nil
+}
 func GetToken(input string, valTy *ValType, pos *int) int {
 	if *pos >= len(input) {
 		return -1
@@ -135,7 +171,7 @@ func Runstring(cmdStr string) error {
 	return nil
 }
 
-// TODO : process string
+//  process string
 func processString(env *Evironment, symbols *SymbolTable, arg string) (string, error) {
 	newarg := arg
 	if strings.HasPrefix(arg, "{") || strings.HasPrefix(arg, "\"") {
@@ -149,10 +185,7 @@ func processString(env *Evironment, symbols *SymbolTable, arg string) (string, e
 	}
 
 	if strings.HasPrefix(arg, "[") {
-		//TODO: do not support now
-		// return "", errors.New("not support now")
 		newarg = arg[1 : len(arg)-1]
-
 		cmdStr := fmt.Sprintf("%s\n", newarg)
 		Runstring(cmdStr)
 		return env.Result, nil
@@ -233,6 +266,21 @@ func ShellCmd(env *Evironment, symbols *SymbolTable, argv []string) error {
 	return nil
 }
 
+func ExprCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
+	// run shell command
+	if len(argv) == 0 {
+		return errors.New("expr: should run with strings")
+	}
+	arg_, err := processString(env, symbols, argv[0])
+	if err != nil {
+		return err
+	}
+	// run expr
+	res := expr.RunParser(arg_)
+	env.Result = fmt.Sprintf("%v", res)
+	return nil
+}
+
 func ExecuteNormalCmd(name string, argv []string) error {
 	if f, ok := CommandMap[name]; ok {
 		return f(globalEnv, CurrentSymbolTable, argv)
@@ -249,4 +297,5 @@ func init() {
 	RegisterCommand("puts", PutsCMD)
 	RegisterCommand("set", SetCMD)
 	RegisterCommand("shell", ShellCmd)
+	RegisterCommand("expr", ExprCMD)
 }

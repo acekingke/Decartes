@@ -1,4 +1,4 @@
-package Parser
+package parser
 
 import (
 	"fmt"
@@ -20,6 +20,8 @@ var keyword = map[string]int{
 	"each":  EACH,
 	"perm":  PERMUTATION,
 	"step":  STEP,
+	"if":    IF,
+	"else":  ELSE,
 }
 
 // alphadigit_fn , alpha or number
