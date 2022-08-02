@@ -28,6 +28,8 @@ func GetToken(input string, valTy *ValType, pos *int) int {
 		switch c {
 		case '+':
 			fallthrough
+		case '-':
+			fallthrough
 		case '(':
 			fallthrough
 		case ')':
@@ -38,6 +40,23 @@ func GetToken(input string, valTy *ValType, pos *int) int {
 		case '/':
 			*pos++
 			return int(c)
+		case '=':
+			*pos++
+			if *pos < len(input) && input[*pos] == '=' {
+				*pos++
+				return EQ
+			} else {
+				return -1
+			}
+
+		case '!':
+			*pos++
+			if *pos < len(input) && input[*pos] == '=' {
+				*pos++
+				return NE
+			} else {
+				return -1
+			}
 		case '<':
 			*pos++
 			if *pos < len(input) {

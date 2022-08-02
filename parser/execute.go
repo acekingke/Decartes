@@ -31,7 +31,8 @@ type SymbolTable struct {
 }
 
 type Evironment struct {
-	Result string
+	Result  string
+	IsBreak bool
 }
 
 var globalEnv *Evironment = &Evironment{}
@@ -88,7 +89,9 @@ func NewWorkCart(cartArr [][]string, p []string, c string) *WorkCart {
 }
 
 func (w *WorkCart) Execute() error {
-
+	if CheckBreak() {
+		return nil
+	}
 	if len(w.CartArray) != len(w.Parameter) {
 		return errors.New("cart: parameter count not match")
 	}
@@ -120,6 +123,14 @@ type IfCmdStruct struct {
 	elseCmd   string
 }
 
+func CheckBreak() bool {
+	return globalEnv.IsBreak
+}
+
+func ResetBreak() {
+	globalEnv.IsBreak = false
+}
+
 func NewIfCmd(expr string, ifcmd string, elseString string) *IfCmdStruct {
 	return &IfCmdStruct{
 		expr:      expr,
@@ -127,9 +138,12 @@ func NewIfCmd(expr string, ifcmd string, elseString string) *IfCmdStruct {
 		elseCmd:   elseString,
 	}
 }
-func (ifcmd *IfCmdStruct) Execute() error {
-	newExprStr := fmt.Sprintf("expr %s\n", ifcmd.expr)
 
+func (ifcmd *IfCmdStruct) Execute() error {
+	if CheckBreak() {
+		return nil
+	}
+	newExprStr := fmt.Sprintf("expr %s\n", ifcmd.expr)
 	Runstring(newExprStr)
 	if globalEnv.Result != "0" {
 		arg_, err := processString(globalEnv, GlobalSymbolTable, ifcmd.ifTrueCmd)
@@ -148,6 +162,36 @@ func (ifcmd *IfCmdStruct) Execute() error {
 	}
 	return nil
 }
+
+type WhileCmdStruct struct {
+	expr         string
+	WhileTrueCmd string
+}
+
+func NewWhile(expr string, whileTrue string) *WhileCmdStruct {
+	return &WhileCmdStruct{
+		expr:         expr,
+		WhileTrueCmd: whileTrue,
+	}
+}
+
+func (whileCmd *WhileCmdStruct) Execute() error {
+	if CheckBreak() {
+		return nil
+	}
+	newExprStr := fmt.Sprintf("expr %s\n", whileCmd.expr)
+	Runstring(newExprStr)
+	for globalEnv.Result != "0" && !globalEnv.IsBreak {
+		arg_, err := processString(globalEnv, GlobalSymbolTable, whileCmd.WhileTrueCmd)
+		if err != nil {
+			return err
+		}
+		Runstring(arg_)
+		Runstring(newExprStr)
+	}
+	return nil
+}
+
 func GetToken(input string, valTy *ValType, pos *int) int {
 	if *pos >= len(input) {
 		return -1
@@ -283,10 +327,13 @@ func ExprCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
 
 func ExecuteNormalCmd(name string, argv []string) error {
 	if f, ok := CommandMap[name]; ok {
-		return f(globalEnv, CurrentSymbolTable, argv)
+		if !CheckBreak() {
+			return f(globalEnv, CurrentSymbolTable, argv)
+		}
 	} else {
 		return errors.New("command not found")
 	}
+	return nil
 }
 
 func RegisterCommand(name string, f NormalCmdFun) {

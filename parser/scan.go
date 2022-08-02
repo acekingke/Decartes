@@ -22,6 +22,7 @@ var keyword = map[string]int{
 	"step":  STEP,
 	"if":    IF,
 	"else":  ELSE,
+	"while": WHILE,
 }
 
 // alphadigit_fn , alpha or number

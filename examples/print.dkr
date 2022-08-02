@@ -19,3 +19,14 @@ set a {hello world}
 puts $a
 set a { {hello world} }
 puts $a
+
+if {1+2>3} {
+	puts hello
+}else{
+	puts 'it not over 3'
+}
+set x 3
+while {$x>0} {
+	puts $x
+	set x [expr {$x-1}]
+}

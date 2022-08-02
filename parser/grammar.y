@@ -6,6 +6,7 @@ import "os"
 %token NEWLINE
 %token BREAK
 %token IF ELSE
+%token WHILE
 %token 	CARTESIAN
 %token  PERMUTATION 
 %token 	STEP
@@ -31,7 +32,6 @@ import "os"
 %type <Value>  SINGLEQUOTE_STRING
 %type <Value>  SQUAREQUOTE_STRING
 %type <Value>  NORMALCMD
-%type <Array>  STEPCMDS
 %left ELSE
 %union {
     WorkValue
@@ -72,6 +72,14 @@ CMD: NORMALCMD WORDS {
     }
     | IFCMD {
        
+    }
+    | BREAK {
+        globalEnv.IsBreak = true;
+    }
+    | WHILE STRING STRING {
+        w := NewWhile($2, $3)
+        w.Execute()
+        globalEnv.IsBreak = false;
     }
 IFCMD: IF STRING  STRING  {
          ifcmd := NewIfCmd($2, $3, "")

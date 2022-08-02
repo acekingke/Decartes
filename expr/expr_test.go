@@ -93,3 +93,25 @@ func TestGetToke2(t *testing.T) {
 		t.Errorf("GetToken() = %v, want %v", got, GE)
 	}
 }
+
+func TestGetToke3(t *testing.T) {
+	var val ValType
+	pos := 0
+	if got := GetToken(" == ", &val, &pos); got != EQ {
+		t.Errorf("GetToken() = %v, want %v", got, EQ)
+	}
+}
+
+func TestGetToke4(t *testing.T) {
+	var val ValType
+	pos := 0
+	if got := GetToken("1 != 1", &val, &pos); got != NUM {
+		t.Errorf("GetToken() = %v, want %v", got, NUM)
+	}
+	if got := GetToken("1 != 1", &val, &pos); got != NE {
+		t.Errorf("GetToken() = %v, want %v", got, NE)
+	}
+	if got := GetToken("1 != 1", &val, &pos); got != NUM {
+		t.Errorf("GetToken() = %v, want %v", got, NUM)
+	}
+}

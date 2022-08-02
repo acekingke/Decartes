@@ -138,6 +138,14 @@ func Test_Expr2(t *testing.T) {
 	_ = Runstring(str)
 }
 
+func Test_Expr3(t *testing.T) {
+	ParserInit()
+	str := ` 
+	set x 3
+	puts [expr {1 + 2 * $x }]
+	`
+	_ = Parser(str)
+}
 func Test_Ifcmd(t *testing.T) {
 	ParserInit()
 	str := `
@@ -151,10 +159,35 @@ func Test_Ifcmd(t *testing.T) {
 func Test_Ifcmd2(t *testing.T) {
 	ParserInit()
 	str := `
+	set x 3
+	if {1+2>$x} {
+		puts hello
+	}else{
+		puts 'it not over 3'
+	}
+	`
+	_ = Parser(str)
+}
+
+func Test_Ifcmd3(t *testing.T) {
+	ParserInit()
+	str := `
 	if {1+2>3} {
 		puts hello
 	}else{
 		puts 'it not over 3'
+	}
+	`
+	_ = Parser(str)
+}
+
+func Test_WhileCmd(t *testing.T) {
+	ParserInit()
+	str := `
+	set x 3
+	while {$x>0} {
+		puts $x
+		set x [expr {$x-1}]
 	}
 	`
 	_ = Parser(str)

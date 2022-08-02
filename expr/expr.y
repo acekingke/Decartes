@@ -10,12 +10,12 @@ import "fmt"
 	}
 	
 	%type	<val>	E
-	%token '+'  '*'   '(' ')' '/' '>' '<'
-	%nonassoc '>'  '<' GE LE
-	%left '+'  
+	%token '+' '-' '*'   '(' ')' '/' '>' '<' 
+	%nonassoc '>'  '<' GE LE EQ	NE
+	%left '+'  '-'
 	%left '*'   '/'
 	%token	<val>	NUM
-	%token GE LE
+	%token GE LE EQ	NE
 	%token NUM 100
 	%start E
 %%
@@ -24,6 +24,9 @@ E:
 	E '+' E {
 		$$	=	$1 + $3
 	}	
+	|E '-' E {
+		$$	=	$1 - $3
+	}
 	| E '*' E {
 		$$	=	$1 * $3
 	}

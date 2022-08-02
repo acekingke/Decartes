@@ -229,6 +229,19 @@ if {1+1>2} {
 	puts "1+1<2"
 }
 ```
+## while command
+`while` command is used to loop the command.
+the form is: `while {condition} {command}`
+for example:
+
+```
+set x 3
+while {$x>0} {
+	puts $x
+	set x [expr {$x-1}]
+}
+```
+
 # COMMAND
 
 step  s1 {xxxx}
