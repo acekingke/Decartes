@@ -192,3 +192,14 @@ func Test_WhileCmd(t *testing.T) {
 	`
 	_ = Parser(str)
 }
+func Test_WhileCmd2(t *testing.T) {
+	ParserInit()
+	str := `
+	set x 1
+	while {$x<2} {
+		set x [expr {$x+1}]
+		puts $x 
+	}
+	`
+	_ = Parser(str)
+}

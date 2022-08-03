@@ -182,10 +182,8 @@ func (whileCmd *WhileCmdStruct) Execute() error {
 	newExprStr := fmt.Sprintf("expr %s\n", whileCmd.expr)
 	Runstring(newExprStr)
 	for globalEnv.Result != "0" && !globalEnv.IsBreak {
-		arg_, err := processString(globalEnv, GlobalSymbolTable, whileCmd.WhileTrueCmd)
-		if err != nil {
-			return err
-		}
+		arg := whileCmd.WhileTrueCmd
+		arg_ := arg[1 : len(arg)-1]
 		Runstring(arg_)
 		Runstring(newExprStr)
 	}
@@ -277,6 +275,7 @@ func SetCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
 	if err != nil {
 		return err
 	}
+	//fmt.Println("set ", argv[0], "=", arg_)
 	symbols.Add(argv[0], &WorkValue{
 		Type:  TypeValue,
 		Value: arg_,
@@ -315,6 +314,7 @@ func ExprCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
 	if len(argv) == 0 {
 		return errors.New("expr: should run with strings")
 	}
+	//fmt.Println("run expr:", argv[0])
 	arg_, err := processString(env, symbols, argv[0])
 	if err != nil {
 		return err

@@ -1,0 +1,11 @@
+set x 1
+set sum 0
+
+while {$x<10} {
+    set x [expr {$x+1}]
+    set sum [expr {$sum+$x}]
+    puts $x 
+}
+puts $sum
+set x 10
+puts [expr {$x < 10}]
