@@ -271,7 +271,7 @@ perm (s1 s2 ... sn)
 - [x]  cart  each command
 - [x]  permutation
 - [x]  if
-- [ ]  while
+- [x]  while
 
 # License
 

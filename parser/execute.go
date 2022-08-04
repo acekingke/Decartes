@@ -284,10 +284,6 @@ func SetCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
 	return nil
 }
 
-// func TearDownCmd(env *Evironment, symbols *SymbolTable, argv []string) error {
-// 	return nil
-// }
-
 func ShellCmd(env *Evironment, symbols *SymbolTable, argv []string) error {
 	// run shell command
 	if len(argv) == 0 {
