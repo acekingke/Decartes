@@ -1,5 +1,4 @@
 # Decartes
-English | [简体中文](README_CN.md) 
 
 The essence of testing is exhaustive.  how to exhaust all possibilities to find bugs, it is a greate challenge. You shouldn‘t do it manually, You should do it with a machine. Language **Decartes** make it. which core is the **Cartesian product** and **permutation** algorithm.
 
@@ -31,7 +30,8 @@ run:
 ## 1 string
 All data is string!. It has three form of string:
 * string without quote
-follow the command, all things is string, and they are separated by space.
+follow the command, all things is string, and they are separated by space. 
+Note that, the string can not contain space, = ! etc. if you want use it, you should use double quote.
 for example:
 ```
 puts hello world
@@ -229,7 +229,7 @@ if {1+1>2} {
 	puts "1+1<2"
 }
 ```
-## while command
+## 10. while command
 `while` command is used to loop the command.
 the form is: `while {condition} {command}`
 for example:
@@ -241,6 +241,30 @@ while {$x>0} {
 	set x [expr {$x-1}]
 }
 ```
+## 11. command across multiple lines
+as normal, a command is end with a new line.
+but if you want to run a command across multiple lines, you can use `\` to separate the command.
+for example:
+
+```
+put hello wolrd!
+```
+you can use `\` to separate the command:
+
+```
+puts hello \
+world
+```
+# variables
+## variable assignment
+use `set` cmd to assign a value to a variable.
+the form is:
+`set variable  value`
+for example:
+```
+set x 1
+```
+When you use the variable, you can use $variable to get the value. the variable can use in string, quoted string, and curly bracket string.
 
 # COMMAND
 

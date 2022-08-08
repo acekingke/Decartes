@@ -2,6 +2,9 @@ package parser
 
 import (
 	"fmt"
+	"log"
+	"regexp"
+	"strings"
 
 	"github.com/acekingke/lexergo"
 )
@@ -160,11 +163,25 @@ var newline_fn lexergo.Bool_string_string_fn = func(x string) (bool, string, str
 	})
 }
 var Scan = func(src string) (string, *Token, error) {
+	// add \space\r\n or \space\n, concat string
+	// Notes: here Shouldn't change the string length, because it will make GetToken's pos is uncorrect.
+	oldsize := len(src)
+	re := regexp.MustCompile(`\\\s*(\r\n|\n)`)
+	found := re.FindString(src)
+	findSize := len(found)
+	if found != "" {
+		src = strings.Replace(src, found, strings.Repeat(" ", findSize), 1)
+	}
+	newsize := len(src)
+	if newsize != oldsize {
+		log.Printf("Scan: change string length from %d to %d\n", oldsize, newsize)
+	}
 	_, _, rest := blank_fn(src)
 	for len(rest) != 0 && rest[0] == '#' {
 		_, _, rest = comment_fn(rest) // skip comment
 		_, _, rest = blank_fn(rest)
 	}
+
 	var flag bool
 	var read string
 	if flag, read, rest = alphadigit_fn(rest); flag {

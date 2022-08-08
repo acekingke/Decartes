@@ -196,10 +196,38 @@ func Test_WhileCmd2(t *testing.T) {
 	ParserInit()
 	str := `
 	set x 1
-	while {$x<2} {
+	while {$x<2} \ 
+	{
 		set x [expr {$x+1}]
 		puts $x 
 	}
+	`
+	_ = Parser(str)
+}
+
+func Test_WhileCmd3(t *testing.T) {
+	ParserInit()
+	str := `
+	set x 1
+	puts $x
+	while {$x} \ 
+	{
+		set x [expr {$x+1}]
+		puts $x
+		if {$x>2} {
+			break
+		}
+	}
+	`
+	_ = Parser(str)
+}
+
+func Test_BreakLine(t *testing.T) {
+	ParserInit()
+	str := `
+	puts hello \
+	world \ 
+	nice
 	`
 	_ = Parser(str)
 }
