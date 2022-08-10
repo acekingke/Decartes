@@ -48,6 +48,20 @@ func Test_Parser6(t *testing.T) {
 		t.Error("Parser error")
 	}
 }
+func Test_ParserOR(t *testing.T) {
+	v := Parser("1&&3 ").val
+	//21.666667
+	if v != 1 {
+		t.Error("Parser error")
+	}
+}
+func Test_ParserOR2(t *testing.T) {
+	v := Parser("1-1&&3 ").val
+	//21.666667
+	if v != 0 {
+		t.Error("Parser error")
+	}
+}
 func TestGetToken(t *testing.T) {
 	type args struct {
 		input string

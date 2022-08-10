@@ -10,12 +10,15 @@ import "fmt"
 	}
 	
 	%type	<val>	E
-	%token '+' '-' '*'   '(' ')' '/' '>' '<' 
+	%token '+' '-' '*'   '(' ')' '/' '>' '<' '!'
+	%left OR
+	%left AND
 	%nonassoc '>'  '<' GE LE EQ	NE
 	%left '+'  '-'
 	%left '*'   '/'
+	%left '!'
 	%token	<val>	NUM
-	%token GE LE EQ	NE
+	%token GE LE EQ	NE AND OR
 	%token NUM 100
 	%start E
 %%
@@ -56,6 +59,20 @@ E:
 	}
 	| E LE E {
 		if $1 <= $3 {
+			$$	=	1
+		} else {
+			$$	=	0
+		}
+	}
+	| E AND E {
+		if $1 >0 && $3 >0 {
+			$$	=	1
+		} else {
+			$$	=	0
+		}
+	}
+	| E OR E {
+		if $1 > 0 || $3 > 0{
 			$$	=	1
 		} else {
 			$$	=	0

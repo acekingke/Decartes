@@ -48,6 +48,24 @@ func GetToken(input string, valTy *ValType, pos *int) int {
 			} else {
 				return -1
 			}
+		// || &&
+		case '|':
+			*pos++
+			if *pos < len(input) && input[*pos] == '|' {
+				*pos++
+				return OR
+			} else {
+				return -1
+			}
+
+		case '&':
+			*pos++
+			if *pos < len(input) && input[*pos] == '&' {
+				*pos++
+				return AND
+			} else {
+				return -1
+			}
 
 		case '!':
 			*pos++
@@ -55,7 +73,7 @@ func GetToken(input string, valTy *ValType, pos *int) int {
 				*pos++
 				return NE
 			} else {
-				return -1
+				return int(c)
 			}
 		case '<':
 			*pos++
