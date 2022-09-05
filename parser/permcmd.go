@@ -13,6 +13,8 @@ type StepType struct {
 }
 type PermType struct {
 	StepNames []string
+	Pre       string
+	Post      string
 }
 
 var StepMap map[string]*StepType = make(map[string]*StepType)
@@ -36,13 +38,26 @@ func (p *PermType) Execute() error {
 			return errors.New("Step " + name + " not found")
 		}
 	}
+	// Add pre and post op
 	perm.Perm(p.StepNames, func(a []string) {
+		if len(p.Pre) != 0 {
+			PushContex()
+			ParserInit()
+			_ = Parser(p.Pre + "\n")
+			PopContex()
+		}
 		for _, name := range a {
 			cmd := StepMap[name].Cmds
 			cmdstr := fmt.Sprintf("%s\n", cmd[1:len(cmd)-1])
 			PushContex()
 			ParserInit()
 			_ = Parser(cmdstr)
+			PopContex()
+		}
+		if len(p.Post) != 0 {
+			PushContex()
+			ParserInit()
+			_ = Parser(p.Post + "\n")
 			PopContex()
 		}
 	})

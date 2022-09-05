@@ -15,6 +15,8 @@ import "os"
 %token 	IDENTIFIER
 %token 	LPAREN
 %token 	RPAREN
+%token  PRE
+%token  POST INTERLEAVE
 //DOLLOR
 %token 	BRACE_STRING
 %token 	DQUOTE_STRING
@@ -32,6 +34,8 @@ import "os"
 %type <Value>  SINGLEQUOTE_STRING
 %type <Value>  SQUAREQUOTE_STRING
 %type <Value>  NORMALCMD
+%type <Value>  PRE_STMT
+%type <Value>  POST_STMT
 %left ELSE
 %union {
     WorkValue
@@ -48,18 +52,32 @@ CMD: NORMALCMD WORDS {
             ParserError(err)
        }
     }
-    |CARTESIAN ARRAYS EACH ARRAY BRACE_STRING {
-       w := NewWorkCart($2, $4, $5[1:len($5)-1]);
+    |CARTESIAN ARRAYS EACH ARRAY PRE_STMT POST_STMT BRACE_STRING {
+       w := NewWorkCart($2, $4,$5, $6, $7[1:len($7)-1]);
        err := w.Execute();
        if err != nil {
           ParserError(err)
        }
     }
-    | PERMUTATION ARRAY  {
+    | PERMUTATION ARRAY PRE_STMT POST_STMT {
        p := &PermType{
             StepNames: $2,
+            Pre: $3,
+            Post: $4,
        }
        err := p.Execute();
+         if err != nil {
+             ParserError(err)
+         }
+    }
+    | INTERLEAVE ARRAY ARRAY PRE_STMT POST_STMT {
+        inter := &InterleaveType{
+            Left : $2,
+            Right: $3,
+            Pre:   $4,
+            Post:  $5,
+        }
+         err := inter.Execute();
          if err != nil {
              ParserError(err)
          }
@@ -89,6 +107,14 @@ IFCMD: IF STRING  STRING  {
                 ifcmd := NewIfCmd($2, $3, $5)
           ifcmd.Execute()
        }
+PRE_STMT: /*empty*/ 
+      | PRE BRACE_STRING {
+        $$ = $2[1:len($2)-1]
+      }
+POST_STMT: /*empty*/ 
+      | POST BRACE_STRING {
+       $$ = $2[1:len($2)-1]
+      }
 
 WORDS : /*empty*/ {
     $$= make([]string,0)

@@ -26,6 +26,11 @@ var keyword = map[string]int{
 	"if":    IF,
 	"else":  ELSE,
 	"while": WHILE,
+	"pre":   PRE,
+	"post":  POST,
+
+	// interleave command
+	"interleave": INTERLEAVE,
 }
 
 // alphadigit_fn , alpha or number

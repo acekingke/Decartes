@@ -30,3 +30,6 @@ while {$x>0} {
 	puts $x
 	set x [expr {$x-1}]
 }
+
+source "/Users/kyc/homework/Decartes/examples/sum.dkr"
+puts $sum

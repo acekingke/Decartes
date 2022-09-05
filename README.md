@@ -282,7 +282,49 @@ shell {xxxx}
 
 perm (s1 s2 ... sn)
 
-# WIP
+interleave
+# Pre, Post
+You can add `pre`  or `post` every cartesian/perm/interleave sequence
+for examples:
+```
+step a {puts do s 1}
+step b {puts "do s 2"}
+step c {puts "do s 3"}
+perm (a b c) pre {puts start} post{puts end}
+```
+as result:
+```
+start 
+do s 1 
+do s 2 
+do s 3 
+end 
+start 
+do s 1 
+do s 3 
+do s 2 
+end 
+start 
+do s 2 
+do s 1 
+do s 3 
+end 
+start 
+do s 2 
+do s 3 
+do s 1 
+end 
+start 
+do s 3 
+do s 2 
+do s 1 
+end 
+start 
+do s 3 
+do s 1 
+do s 2 
+end 
+```
 
 * template code generator
 

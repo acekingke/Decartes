@@ -14,7 +14,7 @@ func TestPerm(t *testing.T) {
 	step a {puts do s 1}
 	step b {puts "do s 2"}
 	step c {puts "do s 3"}
-	perm (a b c)
+	perm (a b c) pre {puts start} post{puts end}
 
 	`
 	ParserInit()

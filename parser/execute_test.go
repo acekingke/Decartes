@@ -16,7 +16,7 @@ func TestWorkCart_Execute(t *testing.T) {
 		fields  fields
 		wantErr bool
 	}{
-		// TODO: Add test cases.
+
 		{
 			name: "test1",
 			fields: fields{
@@ -70,7 +70,7 @@ func Test_Parser(t *testing.T) {
 
 func Test_CarNParser(t *testing.T) {
 	ParserInit()
-	str := `cart (1 2 3) (4 5 6) (7 8 9) each (a b c) {
+	str := `cart (1 2 3) (4 5 6) (7 8 9) each (a b c) pre {puts start} post {puts finished} {
 		puts hello $a $b $c
 	}
 	`
@@ -228,6 +228,15 @@ func Test_BreakLine(t *testing.T) {
 	puts hello \
 	world \ 
 	nice
+	`
+	_ = Parser(str)
+}
+
+func Test_Execute(t *testing.T) {
+	ParserInit()
+	str := `
+	source "../examples/sum.dkr"
+
 	`
 	_ = Parser(str)
 }

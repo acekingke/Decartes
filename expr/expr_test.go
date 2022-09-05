@@ -5,6 +5,7 @@ import (
 )
 
 func Test_Parser(t *testing.T) {
+	ParserInit()
 	v := Parser("1+2*31/3").val
 	//21.666667
 	if v != (1 + 2*31.0/3.0) {
@@ -13,6 +14,7 @@ func Test_Parser(t *testing.T) {
 }
 
 func Test_Parser2(t *testing.T) {
+	ParserInit()
 	v := Parser("1>2").val
 	//21.666667
 	if v != 0 {
@@ -21,6 +23,7 @@ func Test_Parser2(t *testing.T) {
 }
 
 func Test_Parser3(t *testing.T) {
+	ParserInit()
 	v := Parser("1+2*31/3>3").val
 	//21.666667
 	if v != 1 {
@@ -28,6 +31,7 @@ func Test_Parser3(t *testing.T) {
 	}
 }
 func Test_Parser4(t *testing.T) {
+	ParserInit()
 	v := Parser("1+2*31/3<3 ").val
 	//21.666667
 	if v == 1 {
@@ -35,6 +39,7 @@ func Test_Parser4(t *testing.T) {
 	}
 }
 func Test_Parser5(t *testing.T) {
+	ParserInit()
 	v := Parser("1+2*31/3<=3 ").val
 	//21.666667
 	if v == 1 {
@@ -42,6 +47,7 @@ func Test_Parser5(t *testing.T) {
 	}
 }
 func Test_Parser6(t *testing.T) {
+	ParserInit()
 	v := Parser("1+2*31/3>=3 ").val
 	//21.666667
 	if v != 1 {
@@ -49,6 +55,7 @@ func Test_Parser6(t *testing.T) {
 	}
 }
 func Test_ParserOR(t *testing.T) {
+	ParserInit()
 	v := Parser("1&&3 ").val
 	//21.666667
 	if v != 1 {
@@ -56,6 +63,7 @@ func Test_ParserOR(t *testing.T) {
 	}
 }
 func Test_ParserOR2(t *testing.T) {
+	ParserInit()
 	v := Parser("1-1&&3 ").val
 	//21.666667
 	if v != 0 {
@@ -63,6 +71,7 @@ func Test_ParserOR2(t *testing.T) {
 	}
 }
 func TestGetToken(t *testing.T) {
+	ParserInit()
 	type args struct {
 		input string
 		valTy *ValType
@@ -74,7 +83,7 @@ func TestGetToken(t *testing.T) {
 		args args
 		want int
 	}{
-		// TODO: Add test cases.
+
 		{
 			name: "test1",
 			args: args{

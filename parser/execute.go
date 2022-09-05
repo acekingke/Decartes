@@ -77,13 +77,18 @@ type WorkCart struct {
 	CartArray [][]string
 	Parameter []string
 	Commands  string
+	Pre       string
+	Post      string
 }
 
-func NewWorkCart(cartArr [][]string, p []string, c string) *WorkCart {
+// TODO: need to modify the Cart documents.
+func NewWorkCart(cartArr [][]string, p []string, pre, post, c string) *WorkCart {
 	return &WorkCart{
 		CartArray: cartArr,
 		Parameter: p,
 		Commands:  c,
+		Pre:       pre,
+		Post:      post,
 	}
 
 }
@@ -98,6 +103,13 @@ func (w *WorkCart) Execute() error {
 	res := cartesian.CartN(w.CartArray...)
 	localSymbolTable := MakeSymbolTable()
 	for _, v := range res {
+
+		if len(w.Pre) != 0 {
+			PushContex()
+			ParserInit()
+			_ = Parser(w.Pre + "\n")
+			PopContex()
+		}
 		for i, p := range w.Parameter {
 			localSymbolTable.Add(p, &WorkValue{
 				Type:  TypeValue,
@@ -108,6 +120,9 @@ func (w *WorkCart) Execute() error {
 		PushContex()
 		ParserInit()
 		_ = Parser(cmdStr)
+		if len(w.Post) != 0 {
+			_ = Parser(w.Post + "\n")
+		}
 		PopContex()
 
 	}
@@ -332,6 +347,27 @@ func ExecuteNormalCmd(name string, argv []string) error {
 	return nil
 }
 
+// Get the file content, and apply it
+func SourceCMD(env *Evironment, symbols *SymbolTable, argv []string) error {
+	// source ./xxx.dkr
+	if len(argv) == 0 {
+		return errors.New("expr: should run with strings")
+	}
+	//fmt.Println("run expr:", argv[0])
+	arg_, err := processString(env, symbols, argv[0])
+	if err != nil {
+		return err
+	}
+	data, err := os.ReadFile(arg_)
+	if err != nil {
+		panic(err)
+	}
+	res := Runstring(string(data))
+	env.Result = fmt.Sprintf("%v", res)
+	return nil
+}
+
+// Register command
 func RegisterCommand(name string, f NormalCmdFun) {
 	CommandMap[name] = f
 }
@@ -341,4 +377,5 @@ func init() {
 	RegisterCommand("set", SetCMD)
 	RegisterCommand("shell", ShellCmd)
 	RegisterCommand("expr", ExprCMD)
+	RegisterCommand("source", SourceCMD)
 }

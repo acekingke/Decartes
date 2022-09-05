@@ -13,7 +13,6 @@ func TestPerm(t *testing.T) {
 		name string
 		args args
 	}{
-		// TODO: Add test cases.
 		{"test1", args{[]string{"a", "b", "c"}, func(a []string) {
 			t.Logf("%v\n", a)
 		}}},
