@@ -11,5 +11,7 @@ build:
 	go build -o bin/Decartes ./Decartes/*.go
 test:
 	go test ./...
+commit-logs:
+	@git log --pretty=oneline --abbrev-commit > logs.txt
 todo:
 	@grep -rnw './' -e 'TODO:'|grep -v grep

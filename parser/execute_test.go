@@ -64,8 +64,8 @@ func Test_Parser(t *testing.T) {
 	ParserInit()
 	val2 := Parser("set x world\n\n\t\tputs hello $x\n\t\n")
 	fmt.Println(val2)
-	val := Parser("set x world\n\n\t\tputs hello $a $b $c\n\t\n")
-	fmt.Println(val)
+	// val := Parser("set x world\n\n\t\tputs hello $a $b $c\n\t\n")
+	// fmt.Println(val)
 }
 
 func Test_CarNParser(t *testing.T) {

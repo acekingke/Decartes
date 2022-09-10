@@ -3,9 +3,11 @@ package parser
 import "testing"
 
 func TestNewStep(t *testing.T) {
-	str := "step a {puts a}\n"
+	str := "step f {puts a}\n"
+	PushContex()
 	ParserInit()
 	_ = Parser(str)
+	PopContex()
 
 }
 
@@ -17,7 +19,8 @@ func TestPerm(t *testing.T) {
 	perm (a b c) pre {puts start} post{puts end}
 
 	`
+	PushContex()
 	ParserInit()
 	_ = Parser(str)
-
+	PopContex()
 }
