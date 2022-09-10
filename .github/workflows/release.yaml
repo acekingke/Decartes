@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write
-
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
@@ -26,6 +25,7 @@ jobs:
           distribution: goreleaser
           version: v1.8.3
           args: release --rm-dist
+          workdir: Decartes/
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
